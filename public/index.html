@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Генератор коробок STL</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #555;
+      }
+      input[type="number"],
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+      input[type="number"]:focus,
+      select:focus {
+        border-color: #4caf50;
+        outline: none;
+      }
+      .button-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+      }
+      button {
+        flex: 1;
+        padding: 15px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .btn-box {
+        background-color: #4caf50;
+        color: white;
+      }
+      .btn-box:hover {
+        background-color: #45a049;
+      }
+      .btn-lid {
+        background-color: #2196f3;
+        color: white;
+      }
+      .btn-lid:hover {
+        background-color: #1976d2;
+      }
+      .btn-box:disabled,
+      .btn-lid:disabled {
+        background-color: #cccc;
+        cursor: not-allowed;
+      }
+      .error {
+        color: #f44336;
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #ffebee;
+        border-radius: 5px;
+        display: none;
+      }
+      .success {
+        color: #4caf50;
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #e8f5e8;
+        border-radius: 5px;
+        display: none;
+      }
+      .row {
+        display: flex;
+        gap: 15px;
+      }
+      .row .form-group {
+        flex: 1;
+      }
+      .help-text {
+        font-size: 12px;
+        color: #666;
+        margin-top: 3px;
+      }
+      .section {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        background-color: #fafafa;
+      }
+      .section h3 {
+        margin-top: 0;
+        color: #333;
+        border-bottom: 2px solid #4caf50;
+        padding-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🎁 Генератор коробок STL</h1>
+
+      <form id="boxForm">
+        <div class="section">
+          <h3>📏 Основные размеры</h3>
+          <div class="row">
+            <div class="form-group">
+              <label for="width">Ширина (мм):</label>
+              <input
+                type="number"
+                id="width"
+                name="width"
+                value="50"
+                min="10"
+                max="500"
+                step="0.1"
+                required
+              />
+              <div class="help-text">Внешняя ширина коробки</div>
+            </div>
+            <div class="form-group">
+              <label for="height">Высота (мм):</label>
+              <input
+                type="number"
+                id="height"
+                name="height"
+                value="30"
+                min="5"
+                max="500"
+                step="0.1"
+                required
+              />
+              <div class="help-text">Высота коробки</div>
+            </div>
+            <div class="form-group">
+              <label for="depth">Глубина (мм):</label>
+              <input
+                type="number"
+                id="depth"
+                name="depth"
+                value="80"
+                min="10"
+                max="500"
+                step="0.1"
+                required
+              />
+              <div class="help-text">Внешняя глубина коробки</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label for="thickness">Толщина стенок (мм):</label>
+              <input
+                type="number"
+                id="thickness"
+                name="thickness"
+                value="2"
+                min="0.5"
+                max="10"
+                step="0.1"
+                required
+              />
+              <div class="help-text">Толщина стенок и дна коробки</div>
+            </div>
+            <div class="form-group">
+              <label for="sizeType">Тип размеров:</label>
+              <select id="sizeType" name="sizeType">
+                <option value="outer">Внешние размеры</option>
+                <option value="inner">Внутренние размеры</option>
+              </select>
+              <div class="help-text">
+                Указанные размеры - внешние или внутренние
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>🔧 Параметры крышки</h3>
+          <div class="row">
+            <div class="form-group">
+              <label for="clearance">Зазор (мм):</label>
+              <input
+                type="number"
+                id="clearance"
+                name="clearance"
+                value="0.2"
+                min="0"
+                max="2"
+                step="0.05"
+              />
+              <div class="help-text">
+                Зазор между крышкой и коробкой для легкого открывания
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="rimHeight">Высота бортика (мм):</label>
+              <input
+                type="number"
+                id="rimHeight"
+                name="rimHeight"
+                value="3"
+                min="1"
+                max="20"
+                step="0.1"
+              />
+              <div class="help-text">Высота внутреннего бортика крышки</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="rimThickness">Толщина бортика (мм):</label>
+            <input
+              type="number"
+              id="rimThickness"
+              name="rimThickness"
+              value="1.5"
+              min="0.5"
+              max="5"
+              step="0.1"
+            />
+            <div class="help-text">
+              Толщина стенок внутреннего бортика крышки
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="button-group">
+        <button type="button" class="btn-box" onclick="generateSTL('box')">
+          📦 Скачать коробку
+        </button>
+        <button type="button" class="btn-lid" onclick="generateSTL('lid')">
+          🎩 Скачать крышку
+        </button>
+      </div>
+
+      <div id="error" class="error"></div>
+      <div id="success" class="success"></div>
+    </div>
+
+    <script>
+      function showError(message) {
+        const errorDiv = document.getElementById("error");
+        const successDiv = document.getElementById("success");
+        errorDiv.textContent = message;
+        errorDiv.style.display = "block";
+        successDiv.style.display = "none";
+      }
+
+      function showSuccess(message) {
+        const errorDiv = document.getElementById("error");
+        const successDiv = document.getElementById("success");
+        successDiv.textContent = message;
+        successDiv.style.display = "block";
+        errorDiv.style.display = "none";
+      }
+
+      function hideMessages() {
+        document.getElementById("error").style.display = "none";
+        document.getElementById("success").style.display = "none";
+      }
+
+      function validateInputs() {
+        const width = parseFloat(document.getElementById("width").value);
+        const height = parseFloat(document.getElementById("height").value);
+        const depth = parseFloat(document.getElementById("depth").value);
+        const thickness = parseFloat(
+          document.getElementById("thickness").value
+        );
+        const clearance = parseFloat(
+          document.getElementById("clearance").value
+        );
+        const rimHeight = parseFloat(
+          document.getElementById("rimHeight").value
+        );
+        const rimThickness = parseFloat(
+          document.getElementById("rimThickness").value
+        );
+        const sizeType = document.getElementById("sizeType").value;
+
+        if (!width || !height || !depth || !thickness) {
+          throw new Error("Все основные размеры должны быть заполнены");
+        }
+
+        if (width <= 0 || height <= 0 || depth <= 0 || thickness <= 0) {
+          throw new Error("Все размеры должны быть положительными");
+        }
+
+        if (
+          thickness >= width / 2 ||
+          thickness >= depth / 2 ||
+          thickness >= height
+        ) {
+          throw new Error(
+            "Толщина стенок слишком большая относительно размеров коробки"
+          );
+        }
+
+        if (clearance < 0 || clearance > 5) {
+          throw new Error("Зазор должен быть от 0 до 5 мм");
+        }
+
+        if (rimHeight < 0.5 || rimHeight > 50) {
+          throw new Error("Высота бортика должна быть от 0.5 до 50 мм");
+        }
+
+        if (rimThickness < 0.5 || rimThickness > 10) {
+          throw new Error("Толщина бортика должна быть от 0.5 до 10 мм");
+        }
+
+        // Проверяем, что бортик поместится
+        const rimInnerWidth = width - 2 * thickness - 2 * clearance;
+        const rimInnerDepth = depth - 2 * thickness - 2 * clearance;
+
+        if (
+          rimInnerWidth <= rimThickness * 2 ||
+          rimInnerDepth <= rimThickness * 2
+        ) {
+          throw new Error(
+            "Размеры коробки слишком малы для создания бортика крышки. Увеличьте размеры или уменьшите толщину/зазор/толщину бортика"
+          );
+        }
+
+        return {
+          width,
+          height,
+          depth,
+          thickness,
+          clearance,
+          rimHeight,
+          rimThickness,
+          sizeType,
+        };
+      }
+
+      async function generateSTL(type) {
+        hideMessages();
+
+        try {
+          const params = validateInputs();
+
+          const buttons = document.querySelectorAll("button");
+          buttons.forEach((btn) => (btn.disabled = true));
+
+          const response = await fetch("/generate-stl", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              ...params,
+              type: type,
+            }),
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Ошибка сервера");
+          }
+
+          // Создаем ссылку для скачивания
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.style.display = "none";
+          a.href = url;
+
+          // Получаем имя файла из заголовков
+          const contentDisposition = response.headers.get(
+            "Content-Disposition"
+          );
+          let filename = type === "lid" ? "lid.stl" : "box.stl";
+          if (contentDisposition) {
+            const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+            if (filenameMatch) {
+              filename = filenameMatch[1];
+            }
+          }
+
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+
+          showSuccess(
+            `${
+              type === "lid" ? "Крышка" : "Коробка"
+            } успешно сгенерирована и скачана!`
+          );
+        } catch (error) {
+          showError(error.message);
+        } finally {
+          const buttons = document.querySelectorAll("button");
+          buttons.forEach((btn) => (btn.disabled = false));
+        }
+      }
+
+      // Автоматически скрывать сообщения при изменении полей
+      document.querySelectorAll("input, select").forEach((input) => {
+        input.addEventListener("input", hideMessages);
+      });
+    </script>
+  </body>
+</html>
