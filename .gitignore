@@ -7,6 +7,18 @@ npm-debug.log
 coverage
 .nyc_output
 .coverage
-.vscode
-.DS_Store
 .gitignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
