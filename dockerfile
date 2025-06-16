@@ -15,7 +15,7 @@ COPY . .
 
 # Создаем директорию public и копируем туда index.html
 RUN mkdir -p public
-COPY index.html public/
+COPY public/index.html public/
 
 # Открываем порт 3000
 EXPOSE 3000
