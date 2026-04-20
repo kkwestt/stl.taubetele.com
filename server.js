@@ -32,19 +32,19 @@ function generateBoxSTL(width, height, depth, thickness = 2, sizeType = 'outer')
     const I0 = addV(t,t,t),     I1 = addV(w-t,t,t),     I2 = addV(w-t,d-t,t),   I3 = addV(t,d-t,t);
     const I4 = addV(t,t,h),     I5 = addV(w-t,t,h),     I6 = addV(w-t,d-t,h),   I7 = addV(t,d-t,h);
 
-    // 1. Внешние грани
-    addQ(O0,O1,O2,O3);          // дно
-    addQ(O0,O4,O5,O1);          // передняя
-    addQ(O1,O5,O6,O2);          // правая
-    addQ(O2,O6,O7,O3);          // задняя
-    addQ(O3,O7,O4,O0);          // левая
+    // 1. Внешние грани (нормали наружу)
+    addQ(O0,O3,O2,O1);          // дно -Z
+    addQ(O0,O1,O5,O4);          // передняя -Y
+    addQ(O1,O2,O6,O5);          // правая +X
+    addQ(O2,O3,O7,O6);          // задняя +Y
+    addQ(O3,O0,O4,O7);          // левая -X
 
-    // 2. Внутренние стенки (нормали внутрь)
-    addQ(I3,I2,I1,I0);          // дно каверны
-    addQ(I0,I1,I5,I4);          // передняя
-    addQ(I1,I2,I6,I5);          // правая
-    addQ(I2,I3,I7,I6);          // задняя
-    addQ(I3,I0,I4,I7);          // левая
+    // 2. Внутренние стенки (нормали в полость)
+    addQ(I0,I1,I2,I3);          // дно каверны +Z
+    addQ(I0,I4,I5,I1);          // передняя +Y
+    addQ(I1,I5,I6,I2);          // правая -X
+    addQ(I2,I6,I7,I3);          // задняя -Y
+    addQ(I3,I7,I4,I0);          // левая +X
 
     // 3. ПЛОСКИЕ верхние грани (кольцо толщины на уровне h)
     addQ(O4,O5,I5,I4);          // передняя полоса
@@ -108,12 +108,6 @@ function generateLidSTL(width, depth, thickness = 2, clearance = 0.2, rimHeight 
     const t2 = addV(w, d, topZ);
     const t3 = addV(0, d, topZ);
 
-    // Внутренний контур дна (отверстие)
-    const h0 = addV(holeX, holeY, baseZ);
-    const h1 = addV(holeX + holeW, holeY, baseZ);
-    const h2 = addV(holeX + holeW, holeY + holeD, baseZ);
-    const h3 = addV(holeX, holeY + holeD, baseZ);
-
     // Внутренний контур верха основания (отверстие)
     const ht0 = addV(holeX, holeY, topZ);
     const ht1 = addV(holeX + holeW, holeY, topZ);
@@ -149,12 +143,6 @@ function generateLidSTL(width, depth, thickness = 2, clearance = 0.2, rimHeight 
     addQ(b1, b2, t2, t1); // правая
     addQ(b2, b3, t3, t2); // задняя
     addQ(b3, b0, t0, t3); // левая
-
-    // Внутренние боковые стенки основания (стенки отверстия)
-    addQ(h0, ht0, ht1, h1); // передняя
-    addQ(h1, ht1, ht2, h2); // правая
-    addQ(h2, ht2, ht3, h3); // задняя
-    addQ(h3, ht3, ht0, h0); // левая
 
     // Верх основания (кольцо вокруг отверстия)
     addQ(t0, t1, ht1, ht0); // передняя полоса
